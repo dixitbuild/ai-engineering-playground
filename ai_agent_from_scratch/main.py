@@ -51,3 +51,5 @@ agent = create_tool_calling_agent(llm=llm_groq, tools=[], prompt=prompt, output_
 agent_executor = AgentExecutor(agent=agent, tools=[], verbose=True)
 raw_response = agent_executor.invoke({"query": "Write a research paper on the impact of AI on society."})
 print('raw_response---->', raw_response)
+
+# structured_response = parser.parse(raw_response['output'])

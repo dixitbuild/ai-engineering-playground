@@ -1,3 +1,6 @@
+# Tutorial: How to create an AI Agent from scratch using LangChain and LLMs (OpenAI, Anthropic, Groq)
+# Youtube: https://www.youtube.com/watch?v=bTMPwUgLZf0
+
 #load env var
 from dotenv import load_dotenv
 

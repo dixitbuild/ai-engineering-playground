@@ -1,6 +1,7 @@
 #load env var
 from dotenv import load_dotenv
 
+# help with structured output and validation of the output from LLMs
 from pydantic import BaseModel
 
 #langchain LLMs support

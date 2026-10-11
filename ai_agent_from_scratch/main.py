@@ -7,6 +7,8 @@ from pydantic import BaseModel
 from langchain_openai import ChatOpenAI
 from langchain_anthropic import ChatAnthropic
 from langchain_groq import ChatGroq
+#tool related imports
+from langchain.agents import create_tool_calling_agent, AgentExecutor #bunch of tools that can be used to create an agent
 
 #prompt template - helps to create a prompt for the LLMs. so we can give more information to what we want the LLM to do. This is useful for more complex tasks.
 from langchain_core.prompts import ChatPromptTemplate
@@ -43,3 +45,9 @@ prompt = ChatPromptTemplate.from_messages([
     ("placeholder", "{chat_history}"),
     ("human", "{query}"),
     ('placeholder', '{agent_scratch_tools}')]).partial(format_instructions=parser.get_format_instructions())
+
+agent = create_tool_calling_agent(llm=llm_groq, tools=[], prompt=prompt, output_parser=parser)
+
+agent_executor = AgentExecutor(agent=agent, tools=[], verbose=True)
+raw_response = agent_executor.invoke({"query": "Write a research paper on the impact of AI on society."})
+print('raw_response---->', raw_response)

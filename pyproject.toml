@@ -1,0 +1,26 @@
+[project]
+name = "agent-by-hand"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "dixit", email = "dixitbuild@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "langchain>=1.4.4",
+    "langchain-anthropic>=1.7.5",
+    "langchain-community>=0.4.2",
+    "langchain-groq>=1.1.3",
+    "langchain-openai>=1.7.0",
+    "pydantic>=2.14.0",
+    "python-dotenv>=1.2.4",
+    "wikipedia>=1.4.0",
+]
+
+[project.scripts]
+agent-by-hand = "agent_by_hand:main"
+
+[build-system]
+requires = ["uv_build>=0.12.19,<0.13.0"]
+build-backend = "uv_build"

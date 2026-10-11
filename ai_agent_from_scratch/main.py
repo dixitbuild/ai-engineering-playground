@@ -8,7 +8,7 @@ from langchain_openai import ChatOpenAI
 from langchain_anthropic import ChatAnthropic
 from langchain_groq import ChatGroq
 #tool related imports
-from langchain.agents import create_tool_calling_agent, AgentExecutor #bunch of tools that can be used to create an agent
+from langchain_classic.agents import create_tool_calling_agent, AgentExecutor #bunch of tools that can be used to create an agent
 
 #prompt template - helps to create a prompt for the LLMs. so we can give more information to what we want the LLM to do. This is useful for more complex tasks.
 from langchain_core.prompts import ChatPromptTemplate
@@ -44,12 +44,12 @@ prompt = ChatPromptTemplate.from_messages([
     "Wrap the output in this formate and provide no other tesn \n{format_instructions}"),
     ("placeholder", "{chat_history}"),
     ("human", "{query}"),
-    ('placeholder', '{agent_scratch_tools}')]).partial(format_instructions=parser.get_format_instructions())
+    ('placeholder', '{agent_scratchpad}')]).partial(format_instructions=parser.get_format_instructions()) # also asked in promot what resuponse should be in a specific format.
 
-agent = create_tool_calling_agent(llm=llm_groq, tools=[], prompt=prompt, output_parser=parser)
+agent = create_tool_calling_agent(llm=llm_groq, tools=[], prompt=prompt)
 
 agent_executor = AgentExecutor(agent=agent, tools=[], verbose=True)
-raw_response = agent_executor.invoke({"query": "Write a research paper on the impact of AI on society."})
+raw_response = agent_executor.invoke({"query": "What is the meaning of life?"})
 print('raw_response---->', raw_response)
 
-# structured_response = parser.parse(raw_response['output'])
+structured_response = parser.parse(raw_response.get('output'))

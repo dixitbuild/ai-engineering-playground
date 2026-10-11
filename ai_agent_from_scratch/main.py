@@ -52,4 +52,10 @@ agent_executor = AgentExecutor(agent=agent, tools=[], verbose=True)
 raw_response = agent_executor.invoke({"query": "What is the meaning of life?"})
 print('raw_response---->', raw_response)
 
-structured_response = parser.parse(raw_response.get('output'))
+try:
+    structured_response = parser.parse(raw_response.get('output'))
+except Exception as e:
+    print('Error parsing response:', e, 'raw_response:', raw_response)
+    structured_response = None
+
+print('structured_response---->', structured_response.topic if structured_response else None)

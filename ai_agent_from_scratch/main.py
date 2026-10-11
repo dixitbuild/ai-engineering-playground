@@ -3,13 +3,14 @@ from dotenv import load_dotenv
 
 from pydantic import BaseModel
 
-# langchain LLMs support
+#langchain LLMs support
 from langchain_openai import ChatOpenAI
 from langchain_anthropic import ChatAnthropic
 from langchain_groq import ChatGroq
 
-#prompt template - helps to create a prompt for the LLMs
+#prompt template - helps to create a prompt for the LLMs. so we can give more information to what we want the LLM to do. This is useful for more complex tasks.
 from langchain_core.prompts import ChatPromptTemplate
+# for stuctured output/models
 from langchain_core.output_parsers import PydanticOutputParser
 
 load_dotenv()

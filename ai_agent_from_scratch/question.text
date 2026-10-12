@@ -1,0 +1,20 @@
+1.Question: When should I use which model in an agent?
+Answer: For simple, cheap tasks, use a small model. For complex reasoning, long context, or multi-step tool use, use a more capable model. Start with reliability, then optimize for cost and latency.
+
+Imagine your agent is a worker. If the job is simple and you want it done quickly and cheaply, give them a small tool. If the job is tricky, has many steps, or needs careful thinking, then give them the stronger tool. Start simple, then upgrade if accuracy, complex reasoning, long context, or tool use demands it. So, small model for quick, cheap tasks; bigger model for harder slower thinking tasks. Pick for reliability first, then cost. That's the core idea.
+
+2. Question: How we can handle reliability
+Answer: In practice, I handle reliability with several layers. 
+First, choose a stable model and keep the temperature low, so outputs are more consistent. 
+Second, constrain outputs with structured schemas so the agent returns predictable fields. 
+Third, add retries with backoff for transient failures, and set timeouts and circuit breakers so problems fail fast instead of cascading.
+Fourth, log inputs, outputs, latencies, and errors, and monitor for regressions. And finally, test fallbacks, such as a smaller model or a cached answer, 
+so the system degrades gracefully, not catastrophically.
+
+3. How we can reduce as possible as hallucination
+Start with grounding. Connect the agent to trusted sources, for example, retrieval over your curated docs. Ask it to cite which source supports each claim. 
+Then validate outputs with simple rules. 
+For instance, if a field must be a date, check the date format, if it must be a number, parse and bound it. 
+Use low temperatures for classification or extraction tasks. And add post-checks that can catch obviously wrong answers. 
+And finally, keep a human in the loop for high impact decisions until you've measured reliability in production.
+

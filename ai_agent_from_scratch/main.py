@@ -21,11 +21,13 @@ from langchain_core.output_parsers import PydanticOutputParser
 
 # import the tools that we have created in tools.py
 from tools import search_tool, wiki_tool
+#help in debugging.
+from debug_help import DebugLLMCallback
 
 load_dotenv()
 
 # That how we use OpenAI, Anthropic, and Groq LLMs in LangChain. You can choose the model that best fits your needs.
-llm = ChatOpenAI(model_name="gpt-5-mini", temperature=0.3, max_tokens=1000)
+llm = ChatOpenAI(model_name="gpt-5-mini", temperature=0.3, max_tokens=2000)
 # llm = ChatAnthropic(model_name="claude-3-5-sonnet-20241022", temperature=0.7, max_tokens=1000)
 # llm = ChatGroq(model_name="openai/gpt-oss-120b", temperature=0, max_tokens=1000)
 
@@ -48,7 +50,7 @@ parser = PydanticOutputParser(pydantic_object=ResearchResponse)
 prompt = ChatPromptTemplate.from_messages([
     ("system", """You are a research assistant that will help generate a research paper.
             Answer the user query and use neccessary tools you need to atleast check one site before answering. 
-            Wrap the output in this format and provide no other text\n{format_instructions}"""),
+            Wrap the output in this format and provide no other text and Provide a summary in at most 80 words only \n{format_instructions} \n """),
     ("placeholder", "{chat_history}"),
     ("human", "{query}"),
     ('placeholder', '{agent_scratchpad}')]).partial(format_instructions=parser.get_format_instructions()) # also asked in promot what resuponse should be in a specific format.
@@ -60,9 +62,18 @@ tools = [search_tool, wiki_tool]
 agent = create_tool_calling_agent(llm=llm, tools=tools, prompt=prompt)
 
 agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
+
 query = input("What can i help you research? ")
-raw_response = agent_executor.invoke({"query": query or "What is the meaning of life?"})
+# raw_response = agent_executor.invoke({"query": query or "What is the meaning of life?"})
 # print('raw_response---->', raw_response)
+
+raw_response = agent_executor.invoke(
+    {"query": query or "What is the meaning of life?"},
+    config={"callbacks": [DebugLLMCallback()]}
+)
+
+print("FINAL OUTPUT:", repr(raw_response.get("output")))
+
 
 try:
     structured_response = parser.parse(raw_response.get('output'))

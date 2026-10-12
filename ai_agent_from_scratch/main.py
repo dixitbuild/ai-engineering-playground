@@ -53,6 +53,8 @@ prompt = ChatPromptTemplate.from_messages([
     ("human", "{query}"),
     ('placeholder', '{agent_scratchpad}')]).partial(format_instructions=parser.get_format_instructions()) # also asked in promot what resuponse should be in a specific format.
 
+print('Prompt created---->', prompt)
+
 tools = [search_tool]
 agent = create_tool_calling_agent(llm=llm, tools=tools, prompt=prompt)
 

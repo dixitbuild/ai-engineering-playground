@@ -20,7 +20,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import PydanticOutputParser
 
 # import the tools that we have created in tools.py
-from tools import search_tool
+from tools import search_tool, wiki_tool
 
 load_dotenv()
 
@@ -53,21 +53,28 @@ prompt = ChatPromptTemplate.from_messages([
     ("human", "{query}"),
     ('placeholder', '{agent_scratchpad}')]).partial(format_instructions=parser.get_format_instructions()) # also asked in promot what resuponse should be in a specific format.
 
-print('Prompt created---->', prompt)
+print('parser.get_format_instructions()---->', parser.get_format_instructions())
+# print('Prompt created---->', prompt)
 
-tools = [search_tool]
+tools = [search_tool, wiki_tool]
 agent = create_tool_calling_agent(llm=llm, tools=tools, prompt=prompt)
 
 agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
-raw_response = agent_executor.invoke({"query": "What is the meaning of life?"})
+query = input("What can i help you research? ")
+raw_response = agent_executor.invoke({"query": query or "What is the meaning of life?"})
 # print('raw_response---->', raw_response)
 
 try:
     structured_response = parser.parse(raw_response.get('output'))
 except Exception as e:
+    print('**************************************')
     print('Error parsing response:', e)
     print()
     print('raw_response---->', raw_response)
     structured_response = None
 
-print('structured_response---->', structured_response.topic if structured_response else None)
+print('Topic:---->', structured_response.topic if structured_response else None)
+print('Summary:---->', structured_response.summary if structured_response else None)
+print('Sources:---->', structured_response.sources if structured_response else None) 
+print('Tools Used:---->', structured_response.tools_used if structured_response else None)   
+# print('structured_response---->', structured_response)

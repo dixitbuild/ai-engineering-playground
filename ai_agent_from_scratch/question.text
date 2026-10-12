@@ -22,4 +22,15 @@ And finally, keep a human in the loop for high impact decisions until you've mea
 We use ChatPromptTemplate in LangChain to structure and reuse prompts cleanly. It separates system instructions from user inputs using placeholders, making it easier to maintain as your agent grows. 
 It doesn't make the model smarter or guarantee correctness; it just makes prompts cleaner, reusable, and easier to manage.
 
-5. 
+5. How do you handle max token limits when an LLM generates incomplete JSON?
+When an LLM reaches its maximum output token limit before completing a JSON response, it may return incomplete JSON. This causes parsing errors because the parser expects a valid, complete JSON structure.
+To handle this problem, I use the following approaches:
+Set an appropriate token limit: Configure the maximum output tokens based on the expected response size.
+Use structured outputs: Use the model's structured output or JSON schema feature when supported to enforce the required output structure.
+Check the finish reason: Before parsing, check whether the model stopped because it reached the token limit. If the response was truncated, do not treat it as complete.
+Reduce the output size: Shorten the prompt or request fewer items to reduce token consumption.
+Split large tasks into batches: Generate large JSON outputs in smaller chunks instead of requesting everything in one response.
+Handle parsing errors safely: Validate the response before parsing. If generation was truncated, retry with an appropriate token budget or process the remaining task separately.
+Example: If an agent must generate 100 records but the output limit is insufficient, I can generate 20 records per batch, validate each JSON response, and combine the validated results.
+Key takeaway: I prevent incomplete JSON by managing the token budget, using structured outputs, checking the finish reason, and implementing safe retry or batching logic. I never assume that a response is valid JSON simply because the model was instructed to return JSON.
+

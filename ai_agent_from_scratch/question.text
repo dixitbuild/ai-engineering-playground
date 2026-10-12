@@ -18,3 +18,8 @@ For instance, if a field must be a date, check the date format, if it must be a 
 Use low temperatures for classification or extraction tasks. And add post-checks that can catch obviously wrong answers. 
 And finally, keep a human in the loop for high impact decisions until you've measured reliability in production.
 
+4. Why do we use ChatPromptTemplate in LangChain?
+We use ChatPromptTemplate in LangChain to structure and reuse prompts cleanly. It separates system instructions from user inputs using placeholders, making it easier to maintain as your agent grows. 
+It doesn't make the model smarter or guarantee correctness; it just makes prompts cleaner, reusable, and easier to manage.
+
+5. 

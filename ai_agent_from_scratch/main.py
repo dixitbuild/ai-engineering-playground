@@ -19,12 +19,15 @@ from langchain_core.prompts import ChatPromptTemplate
 # for stuctured output/models
 from langchain_core.output_parsers import PydanticOutputParser
 
+# import the tools that we have created in tools.py
+from tools import search_tool
+
 load_dotenv()
 
 # That how we use OpenAI, Anthropic, and Groq LLMs in LangChain. You can choose the model that best fits your needs.
-# llm_openai = ChatOpenAI(model_name="gpt-4o-mini", temperature=0.7, max_tokens=1000)
-# llm_anthropic = ChatAnthropic(model_name="claude-3-5-sonnet-20241022", temperature=0.7, max_tokens=1000)
-llm_groq = ChatGroq(model_name="openai/gpt-oss-120b", temperature=0.7, max_tokens=1000)
+llm = ChatOpenAI(model_name="gpt-5-mini", temperature=0.3, max_tokens=1000)
+# llm = ChatAnthropic(model_name="claude-3-5-sonnet-20241022", temperature=0.7, max_tokens=1000)
+# llm = ChatGroq(model_name="openai/gpt-oss-120b", temperature=0, max_tokens=1000)
 
 #step 1.
 #Using the LLM to invoke a simple prompt, but not added agent functionality yet. This is just a simple example of how to use the LLMs in LangChain.
@@ -43,23 +46,26 @@ parser = PydanticOutputParser(pydantic_object=ResearchResponse)
 
 #here we are telling in prompt that we want the output to be in a specific format.
 prompt = ChatPromptTemplate.from_messages([
-    ("system", "You are a research assistant that will help genterate a research paper."
-    "Answer the user query and use neccessary tools."
-    "Wrap the output in this formate and provide no other tesn \n{format_instructions}"),
+    ("system", """You are a research assistant that will help generate a research paper.
+            Answer the user query and use neccessary tools you need to atleast check one site before answering. 
+            Wrap the output in this format and provide no other text\n{format_instructions}"""),
     ("placeholder", "{chat_history}"),
     ("human", "{query}"),
     ('placeholder', '{agent_scratchpad}')]).partial(format_instructions=parser.get_format_instructions()) # also asked in promot what resuponse should be in a specific format.
 
-agent = create_tool_calling_agent(llm=llm_groq, tools=[], prompt=prompt)
+tools = [search_tool]
+agent = create_tool_calling_agent(llm=llm, tools=tools, prompt=prompt)
 
-agent_executor = AgentExecutor(agent=agent, tools=[], verbose=True)
+agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
 raw_response = agent_executor.invoke({"query": "What is the meaning of life?"})
-print('raw_response---->', raw_response)
+# print('raw_response---->', raw_response)
 
 try:
     structured_response = parser.parse(raw_response.get('output'))
 except Exception as e:
-    print('Error parsing response:', e, 'raw_response:', raw_response)
+    print('Error parsing response:', e)
+    print()
+    print('raw_response---->', raw_response)
     structured_response = None
 
 print('structured_response---->', structured_response.topic if structured_response else None)

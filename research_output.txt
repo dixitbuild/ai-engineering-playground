@@ -1,0 +1,15 @@
+Indonesia: 275,000,000
+Philippines: 113,000,000
+Vietnam: 99,000,000
+Thailand: 69,000,000
+Myanmar: 55,000,000
+Malaysia: 34,000,000
+Cambodia: 17,000,000
+Laos: 7,600,000
+Singapore: 5,900,000
+Timor-Leste: 1,400,000
+Brunei: 460,000
+
+Total (approx.): 677,360,000
+
+Source: UN World Population Prospects 2024 (estimates), World Bank data.

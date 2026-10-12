@@ -20,7 +20,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import PydanticOutputParser
 
 # import the tools that we have created in tools.py
-from tools import search_tool, wiki_tool
+from tools import search_tool, wiki_tool, save_tool
 #help in debugging.
 from debug_help import DebugLLMCallback
 
@@ -58,7 +58,7 @@ prompt = ChatPromptTemplate.from_messages([
 print('parser.get_format_instructions()---->', parser.get_format_instructions())
 # print('Prompt created---->', prompt)
 
-tools = [search_tool, wiki_tool]
+tools = [search_tool, wiki_tool, save_tool]
 agent = create_tool_calling_agent(llm=llm, tools=tools, prompt=prompt)
 
 agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)

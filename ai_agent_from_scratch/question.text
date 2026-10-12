@@ -34,3 +34,24 @@ Handle parsing errors safely: Validate the response before parsing. If generatio
 Example: If an agent must generate 100 records but the output limit is insufficient, I can generate 20 records per batch, validate each JSON response, and combine the validated results.
 Key takeaway: I prevent incomplete JSON by managing the token budget, using structured outputs, checking the finish reason, and implementing safe retry or batching logic. I never assume that a response is valid JSON simply because the model was instructed to return JSON.
 
+6. What are the 5 types of agents in AI?
+    1. Simple Reflex Agents
+    How they work: They operate using direct condition-action (if-then) rules based only on the current percept, ignoring the history of the environment.
+    Key characteristic: They have no memory and work best in fully observable, predictable environments.
+    Example: A basic thermostat that turns the heat on or off depending solely on the current room temperature.
+    2. Model-Based Reflex Agents
+    How they work: They maintain an internal state or "world model" that tracks aspects of the environment that are currently unobservable.
+    Key characteristic: They remember past states to understand how the world changes independently and how their own actions affect it.
+    Example: A self-driving car tracking the position of nearby cars that are temporarily hidden behind a truck
+    3. Goal-Based Agents
+    How they work: They combine internal state information with explicit goals, evaluating future scenarios to choose actions that lead toward their target.
+    Key characteristic: They involve multi-step planning and problem-solving rather than instant reactions.
+    Example: A GPS navigation app calculating a route to a destination while actively avoiding road closures
+    4. Utility-Based Agents
+    How they work: They evaluate goals using a "utility function" that measures how desirable or optimal a specific outcome is.
+    Key characteristic: They can balance competing trade-offs (such as speed, cost, safety, and risk) to maximize overall satisfaction or benefit.
+    Example: A dynamic pricing algorithm that adjusts e-commerce prices by balancing profit margins against competitor rates and customer demand. 
+    5. Learning Agents
+    How they work: They are divided into a learning element, a performance element, a critic, and a problem generator.
+    Key characteristic: They improve their performance over time through experience, adapting to changes in the environment via feedback loops.
+    Example: An AI fraud-detection system that continuously updates its transaction rules as it encounters new types of cyber-attacks

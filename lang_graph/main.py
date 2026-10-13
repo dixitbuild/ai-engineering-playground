@@ -41,3 +41,23 @@ state = graph.invoke({'messages': [{'role': 'system', 'content': 'You are a help
 
 print('------>',state['messages'], len(state['messages']))
 print(state['messages'][-1].content)
+print('-----------------------------------')
+print(graph.get_graph().print_ascii())
+
+"""
++-----------+  
+| __start__ |  
++-----------+  
+      *        
+      *        
+      *        
+ +---------+   
+ | chatbot |   
+ +---------+   
+      *        
+      *        
+      *        
+ +---------+   
+ | __end__ |   
+ +---------+   
+"""

@@ -13,6 +13,24 @@ llm = init_chat_model('gpt-4', temperature=0.0, max_tokens=2000)
 
 
 # step 1 linear graph
+"""
++-----------+  
+| __start__ |  
++-----------+  
+      *        
+      *        
+      *        
+ +---------+   
+ | chatbot |   
+ +---------+   
+      *        
+      *        
+      *        
+ +---------+   
+ | __end__ |   
+ +---------+   
+"""
+
 class State(TypedDict):
     """State of the graph."""
     messages: Annotated[list, add_messages]
@@ -48,23 +66,6 @@ print(graph.get_graph().print_ascii())
 print('-----------------------------------')
 print(graph.get_graph().print_ascii())
 
-"""
-+-----------+  
-| __start__ |  
-+-----------+  
-      *        
-      *        
-      *        
- +---------+   
- | chatbot |   
- +---------+   
-      *        
-      *        
-      *        
- +---------+   
- | __end__ |   
- +---------+   
-"""
-
 
 # step 2 comlpex graph
+

@@ -11,6 +11,8 @@ load_dotenv()
 
 llm = init_chat_model('gpt-4', temperature=0.0, max_tokens=2000)
 
+
+# step 1 linear graph
 class State(TypedDict):
     """State of the graph."""
     messages: Annotated[list, add_messages]
@@ -43,6 +45,8 @@ print('------>',state['messages'], len(state['messages']))
 print(state['messages'][-1].content)
 print('-----------------------------------')
 print(graph.get_graph().print_ascii())
+print('-----------------------------------')
+print(graph.get_graph().print_ascii())
 
 """
 +-----------+  
@@ -61,3 +65,6 @@ print(graph.get_graph().print_ascii())
  | __end__ |   
  +---------+   
 """
+
+
+# step 2 comlpex graph

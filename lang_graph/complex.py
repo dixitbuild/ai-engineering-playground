@@ -65,7 +65,7 @@ def classifed_message(state: State):
             - 'logical': if it asks for facts, information, logical analysis, or practical solutions"""
             },
         {"role": "user",
-            "content": last_message}
+            "content": last_message.content}
         ])
     # state['message_type'] = result.message_type
     #how it works IMP: if we return something is match something in State, it automatically updates the state

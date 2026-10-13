@@ -39,4 +39,5 @@ graph = graph_builder.compile()
 user_input = input("User: Enter your message: ")
 state = graph.invoke({'messages': [{'role': 'system', 'content': 'You are a helpful assistant.'}, {'role': 'user', 'content': user_input}]})
 
+print('------>',state['messages'], len(state['messages']))
 print(state['messages'][-1].content)

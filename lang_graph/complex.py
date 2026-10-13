@@ -145,9 +145,11 @@ graph = graph_builder.compile()
 print('-----------------------------------')
 print(graph.get_graph().print_ascii())
 
+
 def run_chatbot():
     state = {"messages":[], "message_type": None}
 
+    # while loop for continues chat.
     while True:
         user_input = input('Message: ')
         if user_input == "exit":

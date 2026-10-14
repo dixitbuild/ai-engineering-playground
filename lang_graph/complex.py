@@ -82,7 +82,7 @@ def router(state: State):
 def therapist_agent(state: State):
     #it will reply with emotional intelligence
     
-    last_message = state['messages'][-1]
+    last_message = state['messages']#[-1] #to rember previous messages
 
     messages = [
         {
@@ -92,10 +92,7 @@ def therapist_agent(state: State):
                             Ask thoughtful questions to help them explore their feelings more deeply.
                             Avoid giving logical solutions unless explicitly asked."""
          },
-         {
-            "role": "user",
-            "content": last_message.content
-         }
+         *last_message
     ]
 
     reply = llm.invoke(messages)
@@ -104,7 +101,7 @@ def therapist_agent(state: State):
 
 def logical_agent(state: State):
     #it will reply with logically intelligence
-    last_message = state.messages[-1]
+    last_message = state['messages']#[-1] #to rember previous messages
     messages = [
             {
                 "role": "system",
@@ -113,10 +110,7 @@ def logical_agent(state: State):
                             Do not address emotions or provide emotional support.
                             Be direct and straightforward in your responses."""
              },
-             {
-                "role": "user",
-                "content": last_message.content
-             }
+             *last_message
         ]
 
     reply = llm.invoke(messages)
@@ -156,9 +150,11 @@ def run_chatbot():
             print("Bye")
             break
 
-        state['messages'] = state.get('messsage', []) + [{'role': 'user', 'content': user_input}]
+        state['messages'] = state.get('messages', []) + [{'role': 'user', 'content': user_input}]
 
+        print("DEBUG messages sent in: -----> ", len(state["messages"]))
         state = graph.invoke(state)
+        print("DEBUG messages after:  -----> ", len(state["messages"]))
 
         if len(state.get('messages', [])) > 0:
             last_msg = state['messages'][-1]

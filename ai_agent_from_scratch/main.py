@@ -24,6 +24,12 @@ from tools import search_tool, wiki_tool, save_tool
 #help in debugging.
 from debug_help import DebugLLMCallback
 
+#for logs
+from langfuse import get_client
+from langfuse.langchain import CallbackHandler
+langfuse = get_client()
+handler = CallbackHandler()
+
 load_dotenv()
 
 # That how we use OpenAI, Anthropic, and Groq LLMs in LangChain. You can choose the model that best fits your needs.
@@ -69,7 +75,7 @@ query = input("What can i help you research? ")
 
 raw_response = agent_executor.invoke(
     {"query": query or "What is the meaning of life?"},
-    config={"callbacks": [DebugLLMCallback()]}
+    config={"callbacks": [DebugLLMCallback(), handler]}
 )
 
 print("FINAL OUTPUT:", repr(raw_response.get("output")))
@@ -83,6 +89,8 @@ except Exception as e:
     print()
     print('raw_response---->', raw_response)
     structured_response = None
+
+langfuse.flush() 
 
 print('Topic:---->', structured_response.topic if structured_response else None)
 print('Summary:---->', structured_response.summary if structured_response else None)
